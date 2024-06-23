@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+<body>
+
+<div class="container">
+    <div id="app">
+        <div>
+            <table class="table table-striped" id="memberTable">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>이름</th>
+                    <th>도시</th>
+                    <th>주소</th>
+                    <th>우편번호</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function getMembers() {
+        try {
+            const url = 'http://localhost:8090/api/v1/members'; // API 엔드포인트 URL
+            const response = await fetch(url);
+            const data = await response.json();
+            return data; // JSON 데이터 반환
+        } catch (error) {
+            console.error('Error fetching members:', error);
+            return []; // 에러 발생 시 빈 배열 반환
+        }
+    }
+
+    async function renderMembers() {
+        const members = await getMembers(); // 회원 데이터 가져오기
+        const tableBody = document.querySelector('#memberTable tbody');
+        tableBody.innerHTML = ''; // 테이블 내용 초기화
+
+        members.forEach(member => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${member.id}</td>
+                <td>${member.name}</td>
+                <td>${member.address ? member.address.city : ''}</td>
+                <td>${member.address ? member.address.street : ''}</td>
+                <td>${member.address ? member.address.zipcode : ''}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // 페이지 로드 시 실행
+    document.addEventListener('DOMContentLoaded', () => {
+        renderMembers(); // 멤버 데이터를 테이블에 렌더링
+    });
+
+</script>
+
+</body>
+</html>

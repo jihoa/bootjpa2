@@ -1,0 +1,25 @@
+
+server:
+  port: 8090
+
+
+spring:
+  datasource:
+    url: jdbc:mariadb://14.63.192.56:3306/jpashop
+    username: sewang
+    password: sewang
+    driver-class-name: org.mariadb.jdbc.Driver
+
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000 #최적화 옵션
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
